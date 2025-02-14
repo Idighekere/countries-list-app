@@ -9,18 +9,40 @@ import { loadFonts } from './font';
 SplashScreen.preventAutoHideAsync();
 
 const App = () => {
-   const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [appIsReady, setAppIsReady] = useState(false);
 
   useEffect(() => {
-    const loadAsyncFonts = async () => {
-      await loadFonts();
-      setFontsLoaded(true);
+    const prepare = async () => {
+
+      try {
+        await loadFonts();
+
+      } catch (error) {
+        console.warn(error)
+      } finally {
+
+        setAppIsReady(true);
+      }
     };
 
-    loadAsyncFonts();
+    prepare();
   }, []);
 
-   if (!fontsLoaded) {
+
+  useEffect(() => {
+    if (appIsReady) {
+      const hideSplashScreen = async () => {
+        await SplashScreen.hideAsync()
+      }
+      hideSplashScreen()
+    }
+
+
+
+  }, [appIsReady])
+
+
+  if (!appIsReady) {
     return (
       <View style={styles.container}>
         <ActivityIndicator size="large" />

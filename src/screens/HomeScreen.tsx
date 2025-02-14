@@ -1,8 +1,6 @@
 import { FlatList, Image, SectionList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useMemo, useState } from 'react'
-import countriesData from "../data/countries.json";
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { ICountryDetails } from '../types/country';
+import { ICountry } from '../types/country';
 import { ThemedView } from '../components/ui/ThemedView';
 import { ThemedText } from '../components/ui/ThemedText';
 import { useSearch } from '@/context/SearchContext';
@@ -13,7 +11,7 @@ type Props = {}
 
 const HomeScreen = ({ navigation }) => {
 
-  const [countries, setCountries] = useState<ICountryDetails[]>([])
+  const [countries, setCountries] = useState<ICountry[]>([])
   const [loading, setLoading] = useState(true)
   const { searchTerm } = useSearch()
   const { selectedContinents, selectedTimezones } = useFilter()
@@ -27,7 +25,7 @@ const HomeScreen = ({ navigation }) => {
         const data = await response.json()
         // console.log(data)
 
-const removeAntarctica=data.filter((d)=>d.name.common!=='Antarctica')
+        const removeAntarctica = data.filter((d: Pick<ICountry, 'name'>) => d.name.common !== 'Antarctica')
         setCountries(removeAntarctica)
 
 
@@ -68,16 +66,18 @@ const removeAntarctica=data.filter((d)=>d.name.common!=='Antarctica')
 
     //Transform countries into section based on first letter
     const sectionedCountries = groupByFirstLetter(filtered)
-    const sortedCountries = sectionedCountries.sort((a, b) => a.title.localeCompare(b.title))
+    type Title = {
+      title: string
+    }
+    const sortedCountries = sectionedCountries.sort((a: Title, b: Title) => a.title.localeCompare(b.title))
     return sortedCountries
 
   }, [countries, searchTerm, selectedContinents, selectedTimezones])
   const handleNavigate = (countryName: string) => {
     navigation.navigate('Details', { countryName })
   }
-  // const filteredCountries = countries?.filter((country) => country?.name?.common?.toLowerCase().includes(searchTerm?.toLowerCase()))
 
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item }: { item: ICountry }) => {
 
     // console.log(item)
     return (<TouchableOpacity style={styles.item} onPress={() => handleNavigate(item?.name?.common)}>
@@ -92,7 +92,7 @@ const removeAntarctica=data.filter((d)=>d.name.common!=='Antarctica')
     );
   }
 
-  const renderSectionHeader = ({ section: { title } }) => (
+  const renderSectionHeader = ({ section: { title } }: { section: { title: string } }) => (
     <ThemedView style={styles.header}>
       <ThemedText style={styles.headerTitle}>{title}</ThemedText>
     </ThemedView>
@@ -108,15 +108,15 @@ const removeAntarctica=data.filter((d)=>d.name.common!=='Antarctica')
   )
 
 
-  if(loading){
+  if (loading) {
     return (<LoadingScreen loading={loading} />)
 
   }
 
 
-if(filteredAndGroupedCountries.length==0){
-  return renderEmptyList()
-}
+  if (filteredAndGroupedCountries.length == 0) {
+    return renderEmptyList()
+  }
 
   return (
 
@@ -157,10 +157,10 @@ const styles = StyleSheet.create({
     marginVertical: 0,
     lineHeight: 15,
     borderColor: "white",
-    fontFamily:'Axiforma'
+    fontFamily: 'Axiforma'
   },
   headerTitle: {
-    fontFamily:'Axiforma'
+    fontFamily: 'Axiforma'
   },
   item: {
     paddingHorizontal: 15,
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
   capital: {
     fontSize: 14,
     opacity: 0.7,
-    fontFamily:'Axiforma',
+    fontFamily: 'Axiforma',
     // borderWidth: 3,
     lineHeight: 14,
   }, emptyContainer: {
@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     opacity: 0.7,
-    fontFamily:'Axiforma'
+    fontFamily: 'Axiforma'
   },
 
 })

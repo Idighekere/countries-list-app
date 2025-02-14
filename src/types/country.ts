@@ -1,44 +1,79 @@
 export interface ICountryDetails {
-    name:              string;
-    full_name:         string;
-    capital:           string;
-    iso2:              string;
-    iso3:              string;
-    covid19:           Covid19;
-    current_president: CurrentPresident;
-    currency:          string;
-    phone_code:        string;
-    continent:         string;
-    description?:       null;
-    size:              string;
-    independence_date: null;
-    population:        string;
-    href:              TopLevelHref;
+    flags: Flags;
+    name: Name;
+    currencies: Record<string, Currencies>;
+    idd: Idd;
+    capital: string[];
+    region: string;
+    languages: Record<string, string>;
+    area: number;
+    maps?: Maps;
+    population: number;
+    car: Car;
+    timezones: string[];
+
+    continents: string[]
 }
 
-export interface Covid19 {
-    total_case:   string;
-    total_deaths: string;
-    last_updated: Date;
+export interface Car {
+    signs: string[];
+    side: string;
 }
 
-export interface CurrentPresident {
-    name:                   string;
-    gender?:                 string;
-    appointment_start_date?: Date;
-    appointment_end_date?:   null;
-    href?:                   CurrentPresidentHref;
+export interface Currencies {
+    name: string;
+    symbol: string;
 }
 
-export interface CurrentPresidentHref {
-    self:    string;
-    country: string;
-    picture: string;
+export interface Flags {
+    png: string;
+    svg: string;
+    alt: string;
 }
 
-export interface TopLevelHref {
-    self?:       string;
-    states:     string;
-    presidents: string;
-    flag:       string;
+export interface Idd {
+    root: string;
+    suffixes: string[];
+}
+
+
+
+export interface Maps {
+    googleMaps: string;
+    openStreetMaps: string;
+}
+
+export interface Name {
+    common: string;
+    official: string;
+    nativeName?: Record<string, NativeName>;
+}
+
+
+export interface ICountry {
+    flags: Flags;
+    name: Name;
+    capital: string[];
+    region: string;
+    timezones: string[];
+    continents: string[]
+}
+
+export interface Flags {
+    png: string;
+    svg: string;
+    alt: string;
+}
+
+export interface Name {
+    common: string;
+    official: string;
+    nativeName?: Record<string, NativeName>;
+}
+
+
+
+export interface NativeName {
+    official: string;
+    common: string;
 }

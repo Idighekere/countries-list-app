@@ -78,11 +78,11 @@ export default function HomeHeader() {
 
                     <ThemedView style={[styles.bottomContainerIconContainer, styles.languageContainer, { borderColor: colors.text }]}>
                         <Feather name="globe" size={20} color={theme == 'light' ? '#000' : '#fff'} />
-                        <ThemedText style={{fontFamily:'Axiforma'}}>EN</ThemedText>
+                        <ThemedText style={{ fontFamily: 'Axiforma' }}>EN</ThemedText>
                     </ThemedView>
                     <TouchableOpacity style={[styles.bottomContainerIconContainer, styles.filterContainer, { borderColor: colors.text }]} onPress={() => setModalVisible(true)}>
                         <Feather name='filter' size={20} color={theme == 'light' ? '#000' : '#fff'} />
-                        <ThemedText style={{fontFamily:'Axiforma'}}>Filter {hasActiveFilters ? `(${selectedContinents.length + selectedTimezones.length})` : ''}</ThemedText>
+                        <ThemedText style={{ fontFamily: 'Axiforma' }}>Filter {hasActiveFilters ? `(${selectedContinents.length + selectedTimezones.length})` : ''}</ThemedText>
                     </TouchableOpacity>
                 </ThemedView>
             </ThemedView>
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
         color: '#000',
         fontSize: 25,
         fontWeight: 'bold',
-        fontFamily:'Axiforma'
+        fontFamily: 'Axiforma'
     },
     // rightContainer: {
     //     width: 40,
@@ -139,7 +139,8 @@ const styles = StyleSheet.create({
         borderRadius: 5
     },
     searchInput: {
-        fontFamily:'Axiforma'
+        fontFamily: 'Axiforma',
+        width: "100%"
         // position: "relative",
         // textAlign: "center"
     },

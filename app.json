@@ -15,15 +15,14 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.idighs.countrieslistapp"
     },
     "web": {
       "bundler": "metro",
-
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-
       [
         "expo-splash-screen",
         {
@@ -36,6 +35,11 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "b376cb7f-e040-4416-83b6-e5483a71bdef"
+      }
     }
   }
 }

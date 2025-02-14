@@ -5,27 +5,66 @@ import LoadingScreen from './LoadingScreen'
 import { ThemedView } from '@/components/ui/ThemedView'
 import { ThemedText } from '@/components/ui/ThemedText'
 
-type Props = {}
 
-const CountryDetailsScreen = ({ navigation, route }) => {
+interface Props {
+    navigation: any;
+    route: {
+        params: {
+            countryName: string;
+        };
+    };
+}
+
+const initialCountryDetails: ICountryDetails = {
+    name: { common: '', official: '' },
+    capital: [],
+    flags: { png: '', svg: '', alt: '' },
+    currencies: {},
+    region: '',
+    languages: {},
+    area: 0,
+    maps: { googleMaps: '', openStreetMaps: '' },
+    population: 0,
+    car: { side: '', signs: [] },
+    timezones: [],
+    idd: { root: '', suffixes: [] },
+    continents: []
+};
+
+const CountryDetailsScreen = ({ route }: Props) => {
 
     const { countryName } = route.params;
-    const [countryDetails, setCountryDetails] = useState({})
+    const [countryDetails, setCountryDetails] = useState<ICountryDetails>(initialCountryDetails)
     const [loading, setLoading] = useState(true)
+    const [error, setError] = useState<string | null>(null);
+    const [images, setImages] = useState<string[]>([])
 
     const { width } = useWindowDimensions()
     useEffect(() => {
         const fetchCountries = async () => {
+            if (!countryName) return;
+
             try {
                 const response = await fetch(`https://restcountries.com/v3.1/name/${countryName}?fields=name,capital,flags,currencies,region,languages,area,maps,population,car,timezones,idd,continents`)
                 // const response = await fetch(require('../data/countries.json'))
-                const data = await response.json()
-                console.log(data)
-                setCountryDetails(data[0])
-                console.log(countryDetails)
+                if (!response.ok) {
+                    throw new Error('Failed to fetch country details');
+                }
+
+                const data = await response.json();
+                if (data && data[0]) {
+                    setCountryDetails(data[0]);
+
+                    setImages([data[0].maps.openStreetMaps, data[0].maps.googleMaps, data[0].flags.png])
+                    console.log(images)
+                } else {
+                    setError('No country data found');
+                }
 
             } catch (error) {
                 console.error(error)
+                setError(error instanceof Error ? error.message : 'An error occurred');
+
             } finally {
                 setLoading(false)
             }
@@ -37,9 +76,7 @@ const CountryDetailsScreen = ({ navigation, route }) => {
         }
     }, [])
 
-    // if (loading) {
-    //     return
-    // }
+
 
     const formatCurrencies = (): string => {
         if (!countryDetails?.currencies) return ''
@@ -73,6 +110,18 @@ const CountryDetailsScreen = ({ navigation, route }) => {
         if (!countryDetails?.idd?.root || !countryDetails?.idd?.suffixes) return ''
         return `${countryDetails.idd.root}${countryDetails.idd.suffixes[0] || ''}`
     }
+    if (loading) {
+        return <LoadingScreen loading={loading} />
+
+    }
+
+    if (error) {
+        return (
+            <ThemedView style={styles.container}>
+                <ThemedText style={styles.errorText}>{error}</ThemedText>
+            </ThemedView>
+        );
+    }
 
 
     return (
@@ -90,22 +139,22 @@ const CountryDetailsScreen = ({ navigation, route }) => {
                 <RowInfo label='Capital' text={countryDetails?.capital?.length ? countryDetails.capital[0] : ''} />
 
                 <SeperatorGap />
-                                <RowInfo label='Official language' text={formatLanguages()} />
+                <RowInfo label='Official language' text={formatLanguages()} />
 
-                <RowInfo label='Full Name' text={countryDetails?.name?.nativeName?.official || countryDetails?.name?.common} />
+                <RowInfo label='Full Name' text={countryDetails?.name?.official || countryDetails?.name?.common} />
                 {/* <SeperatorGap /> */}
 
 
 
                 <SeperatorGap />
-                <RowInfo label={'Area'} text={countryDetails?.area ? `${countryDetails.area.toLocaleString()} km²` : ''} />
+                <RowInfo label={'Area'} text={countryDetails?.area ? `${countryDetails?.area?.toLocaleString()} km²` : ''} />
                 <RowInfo label='Currency' text={formatCurrencies()} />
 
                 <SeperatorGap />
 
-<RowInfo label='Time zone' text={countryDetails.timezones[0]} />
+                <RowInfo label='Time zone' text={countryDetails?.timezones[0]} />
                 <RowInfo label='Dailing Code' text={formatCountryCode()} />
-<RowInfo label='Driving Side' text={countryDetails.car.side} />
+                <RowInfo label='Driving Side' text={countryDetails?.car?.side} />
 
             </ThemedView>
         </ThemedView>
@@ -148,6 +197,7 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 16,
+        fontFamily: "Axiforma"
         // wordWrap: '',
     },
     label: {
@@ -157,5 +207,11 @@ const styles = StyleSheet.create({
 
         aspectRatio: 2 / 1,
         borderRadius: 10
-    }
+    },
+    errorText: {
+        fontSize: 16,
+        textAlign: 'center',
+        marginTop: 20,
+        color: 'red',
+    },
 })

@@ -22,13 +22,14 @@ if (Platform.OS === 'android') {
         UIManager.setLayoutAnimationEnabledExperimental(true);
     }
 }
-const { height,width } = Dimensions.get('window');
+const { height, width } = Dimensions.get('window');
 
 interface AccordionProps {
     title: string;
     children: React.ReactNode;
     expanded: boolean;
     onPress: () => void;
+    maxHeight?: number
 
 }
 
@@ -36,7 +37,8 @@ const Accordion: React.FC<AccordionProps> = ({
     title,
     children,
     expanded,
-    onPress
+    onPress,
+    maxHeight
 }) => {
     const { colors } = useTheme();
 
@@ -54,9 +56,16 @@ const Accordion: React.FC<AccordionProps> = ({
                 />
             </TouchableOpacity>
             {expanded && (
-                <ThemedView style={styles.accordionContent}>
+                <ScrollView
+                    style={[
+                        styles.accordionContent,
+                        maxHeight ? { maxHeight } : undefined
+                    ]}
+                    showsVerticalScrollIndicator={true}
+                    nestedScrollEnabled={true}
+                >
                     {children}
-                </ThemedView>
+                </ScrollView>
             )}
         </ThemedView>
     );
@@ -65,7 +74,7 @@ const Accordion: React.FC<AccordionProps> = ({
 
 const FilterModal = ({ modalVisible, onClose, selectedContinents, selectedTimezones, onFilterChange }: Props) => {
 
-    const continents = ['Africa', 'Antarctica', 'Asia', 'Australia','Europe', 'North America','South America'];
+    const continents = ['Africa', 'Antarctica', 'Asia', 'Australia', 'Europe', 'North America', 'South America'];
     const timezones = ['UTC-12:00', 'UTC-11:00', 'UTC-10:00', 'UTC-09:00', 'UTC-08:00',
         'UTC-07:00', 'UTC-06:00', 'UTC-05:00', 'UTC-04:00', 'UTC-03:00',
         'UTC-02:00', 'UTC-01:00', 'UTC+00:00', 'UTC+01:00', 'UTC+02:00',
@@ -76,7 +85,7 @@ const FilterModal = ({ modalVisible, onClose, selectedContinents, selectedTimezo
 
 
 
-    const { colors,theme} = useTheme()
+    const { colors, theme } = useTheme()
     const toggleAccordion = (section: 'continent' | 'timezone') => {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         if (section === 'continent') {
@@ -106,18 +115,18 @@ const FilterModal = ({ modalVisible, onClose, selectedContinents, selectedTimezo
     return (
 
         <Modal visible={modalVisible} animationType='slide' transparent={true} onRequestClose={onClose}>
-             <StatusBar backgroundColor={'#FF6C00CC'} style={theme == 'light' ? "dark" : 'light'} />
+            <StatusBar backgroundColor={'#FF6C00CC'} style={theme == 'light' ? "dark" : 'light'} />
             <TouchableOpacity
                 style={styles.overlay}
                 activeOpacity={1}
                 onPress={onClose}
             >
-                <ThemedView style={[styles.modalView, {fontFamily:'Axiforma'}]}>
+                <ThemedView style={[styles.modalView]}>
                     <TouchableOpacity
                         activeOpacity={1}
                         onPress={e => e.stopPropagation()}
                     >
-                        <View style={[styles.modalHeader,{borderBottomColor:colors.tint,paddingBottom:4}]}>
+                        <View style={[styles.modalHeader, { borderBottomColor: colors.tint, paddingBottom: 4 }]}>
                             <ThemedText style={styles.modalTitle}>Filter</ThemedText>
                             <TouchableOpacity onPress={onClose}>
                                 <Feather name="x" size={24} color={colors.text} />
@@ -143,10 +152,11 @@ const FilterModal = ({ modalVisible, onClose, selectedContinents, selectedTimezo
 
                             <Accordion
                                 title="Timezone"
+                                maxHeight={300}
                                 expanded={expandedTimezone}
                                 onPress={() => toggleAccordion('timezone')}
                             >
-                                <ThemedView style={styles.filterOptions}>
+                                <ScrollView style={styles.filterOptions}>
                                     {timezones.map((timezone) => (
                                         <CheckBox
                                             key={timezone}
@@ -155,14 +165,14 @@ const FilterModal = ({ modalVisible, onClose, selectedContinents, selectedTimezo
                                             onPress={() => handleTimezoneToggle(timezone)}
                                         />
                                     ))}
-                                </ThemedView>
+                                </ScrollView>
                             </Accordion>
                         </ScrollView>
                     </TouchableOpacity>
-<View style={styles.footerButtons}>
-    <TouchableOpacity style={[styles.clearButton,{borderColor:colors.text}]}onPress={clearFilters}><ThemedText>Reset</ThemedText></TouchableOpacity>
-    <TouchableOpacity style={styles.showResultsButton} onPress={onClose}><Text style={{color:"white",fontFamily:'Axiforma',fontSize:16}}>Show results</Text></TouchableOpacity>
-</View>
+                    <View style={styles.footerButtons}>
+                        <TouchableOpacity style={[styles.clearButton, { borderColor: colors.text }]} onPress={clearFilters}><ThemedText>Reset</ThemedText></TouchableOpacity>
+                        <TouchableOpacity style={styles.showResultsButton} onPress={onClose}><Text style={{ color: "white", fontFamily: 'Axiforma', fontSize: 16 }}>Show results</Text></TouchableOpacity>
+                    </View>
                 </ThemedView>
             </TouchableOpacity>
         </Modal>
@@ -185,7 +195,7 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 32,
         maxHeight: height * 0.8,
         padding: 20,
-
+        // paddingBottom: 50
 
     },
     modalHeader: {
@@ -198,11 +208,12 @@ const styles = StyleSheet.create({
     },
     modalTitle: {
         fontSize: 20,
-        fontFamily:'Axiforma',
+        fontFamily: 'Axiforma',
         fontWeight: '500',
     },
     modalContent: {
         padding: 5,
+        overflowY: "scroll"
         // flex:1,
     },
     filterSection: {
@@ -210,6 +221,8 @@ const styles = StyleSheet.create({
     },
     accordionContainer: {
         marginBottom: 16,
+        overflowY: "scroll",
+        flex: 1
     },
     accordionHeader: {
         flexDirection: 'row',
@@ -221,7 +234,7 @@ const styles = StyleSheet.create({
     accordionTitle: {
         fontSize: 16,
         fontWeight: '400',
-        fontFamily:'Axiforma'
+        fontFamily: 'Axiforma'
     },
     accordionContent: {
         paddingTop: 12,
@@ -236,6 +249,7 @@ const styles = StyleSheet.create({
         paddingVertical: 6,
         borderRadius: 20,
         borderWidth: 1,
+        flex: 1
     },
     filterOptionSelected: {
         backgroundColor: '#007AFF',
@@ -249,30 +263,36 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         borderTopColor: '#eee',
     },
-    footerButtons:{
+    footerButtons: {
         // flex:,
-        gap:15,
-        width:width-40,
-        flexDirection:"row"
+        gap: 15,
+        // marginHorizontal: 15,
+        // width: width - 40,
+        flexDirection: "row",
+        // position: "absolute",
+        bottom: 10,
+        // marginTop: "25%",
+        left: 0,
+        right: 0
 
     },
     clearButton: {
         padding: 12,
-        width:"30%",
+        width: "30%",
         borderRadius: 6,
         alignItems: 'center',
         borderWidth: 1,
-        justifyContent:"center",
-        alignItems:"center"
+        justifyContent: "center",
+
     },
-    showResultsButton:{
-        backgroundColor:"#FF6C00CC",
-        width:"65%",
-        paddingHorizontal:15,
-        paddingVertical:10,
-        borderRadius:6,
-         justifyContent:"center",
-        alignItems:"center"
+    showResultsButton: {
+        backgroundColor: "#FF6C00CC",
+        width: "65%",
+        paddingHorizontal: 15,
+        paddingVertical: 10,
+        borderRadius: 6,
+        justifyContent: "center",
+        alignItems: "center"
     }
 
 })

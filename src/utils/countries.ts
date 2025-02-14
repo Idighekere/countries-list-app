@@ -1,4 +1,6 @@
-export const groupByFirstLetter = (countries: any) => {
+import { ICountry } from "@/types/country";
+
+export const groupByFirstLetter = (countries: ICountry[]) => {
 
 
     return countries.reduce((acc: { title: string; data: any[] }[], country) => {
