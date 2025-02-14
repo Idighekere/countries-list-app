@@ -197,11 +197,11 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 16,
-        fontFamily: "Axiforma"
         // wordWrap: '',
     },
     label: {
-        fontWeight: "bold"
+        fontFamily: "Axiforma Bold",
+        // fontWeight: "bold"
     },
     flag: {
 

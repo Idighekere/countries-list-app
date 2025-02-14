@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
     },
     modalTitle: {
         fontSize: 20,
-        fontFamily: 'Axiforma',
+        fontFamily: 'Axiforma Bold',
         fontWeight: '500',
     },
     modalContent: {
@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
     accordionTitle: {
         fontSize: 16,
         fontWeight: '400',
-        fontFamily: 'Axiforma'
+        fontFamily: 'Axiforma Bold'
     },
     accordionContent: {
         paddingTop: 12,

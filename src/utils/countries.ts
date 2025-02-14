@@ -2,8 +2,8 @@ import { ICountry } from "@/types/country";
 
 export const groupByFirstLetter = (countries: ICountry[]) => {
 
-
-    return countries.reduce((acc: { title: string; data: any[] }[], country) => {
+    const sortedCountries = countries.sort((a, b) => a?.name?.common.localeCompare(b?.name?.common))
+    return sortedCountries.reduce((acc: { title: string; data: any[] }[], country) => {
 
         const firstLetter = country.name.common[0].toUpperCase()
 

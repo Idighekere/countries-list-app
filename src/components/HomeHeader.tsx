@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, TextInput, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, TextInput, Image, Alert } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ThemedView } from '@/components/ui/ThemedView';
@@ -76,10 +76,10 @@ export default function HomeHeader() {
                 {/* Bottom Filter and Language  */}
                 <ThemedView style={styles.bottomContainer}>
 
-                    <ThemedView style={[styles.bottomContainerIconContainer, styles.languageContainer, { borderColor: colors.text }]}>
+                    <TouchableOpacity style={[styles.bottomContainerIconContainer, styles.languageContainer, { borderColor: colors.text }]} onPress={() => Alert.alert('This feature is coming soon')}>
                         <Feather name="globe" size={20} color={theme == 'light' ? '#000' : '#fff'} />
                         <ThemedText style={{ fontFamily: 'Axiforma' }}>EN</ThemedText>
-                    </ThemedView>
+                    </TouchableOpacity>
                     <TouchableOpacity style={[styles.bottomContainerIconContainer, styles.filterContainer, { borderColor: colors.text }]} onPress={() => setModalVisible(true)}>
                         <Feather name='filter' size={20} color={theme == 'light' ? '#000' : '#fff'} />
                         <ThemedText style={{ fontFamily: 'Axiforma' }}>Filter {hasActiveFilters ? `(${selectedContinents.length + selectedTimezones.length})` : ''}</ThemedText>

@@ -62,5 +62,6 @@ const styles = StyleSheet.create({
     }, title: {
         textAlign: "center",
         fontSize: 17,
-fontFamily:'Axiforma'    }
+        fontFamily: 'Axiforma Bold'
+    }
 })
