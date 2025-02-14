@@ -136,6 +136,8 @@ const styles = StyleSheet.create({
         width: "100%",
         gap: 20,
         paddingHorizontal: 15,
+        paddingVertical: 7,
+        height: 60,
         borderRadius: 5
     },
     searchInput: {

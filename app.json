@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "countries-list-app",
+    "name": "Explore",
     "slug": "countries-list-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -13,7 +13,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/logo-dark.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.idighs.countrieslistapp"
@@ -26,7 +26,7 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/logo-dark.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
