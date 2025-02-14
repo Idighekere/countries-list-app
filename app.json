@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "Explore",
+    "name": "Countries Explorer",
     "slug": "countries-list-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "countries-list-app",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -13,7 +13,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/logo-dark.png",
+        "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.idighs.countrieslistapp"
@@ -29,9 +29,12 @@
           "image": "./assets/images/logo-dark.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
-        }
-      ]
+          "backgroundColor": "#ffffff",
+          "dark":{
+            "image":"./assets/images/logo-light.png",
+            "backgroundColor":"#ECEDEE"
+          }
+        }      ]
     ],
     "experiments": {
       "typedRoutes": true
